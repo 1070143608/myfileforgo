@@ -56,3 +56,37 @@ func randomFormat() string {
 	// a random index for the slice of formats.
 	return formats[rand.Intn(len(formats))]
 }
+
+func canCross(stones []int) bool {
+	var dict_stones = map[int]map[int]bool{}
+	for _, stone := range stones {
+		dict_stones[stone] = map[int]bool{}
+	}
+	dict_stones[stones[0]][1] = false
+	for i, stone := range stones {
+		for step, _ := range dict_stones[stone] {
+			var exist bool
+			var step_map map[int]bool
+			step_map, exist = dict_stones[i+step]
+			if exist {
+				if step - 1 > 0 {
+					step_map[step-1] = true
+				}
+				if step > 0 {
+					step_map[step] = true
+				}
+				if step + 1 > 0 {
+					step_map[step] = true
+				}
+			}
+		}
+
+	}
+	var last_stone map[int]bool
+	last_stone, _ = dict_stones[stones[len(stones)-1]]
+	if len(last_stone) == 0 {
+		return false
+	}
+	return true
+
+}
