@@ -3,6 +3,7 @@ package greetings
 import (
 	"errors"
 	"fmt"
+	"math"
 	"math/rand"
 	"time"
 )
@@ -90,3 +91,37 @@ func canCross(stones []int) bool {
 	return true
 
 }
+
+
+func reverse(x int) int {
+	var sign int
+	if x >= 0 {
+		sign = 1
+	} else {
+		sign = -1
+	}
+	x = int(math.Abs(float64(x)))
+	var res = x % 10
+	x = x / 10
+	for x > 0 {
+		res = res * 10 + x % 10
+		x = x / 10
+	}
+	var downLimit = -1 * math.Pow(2, 31)
+	var upLimit = math.Pow(2,31) - 1
+	if x >= int(downLimit) && x <= int(upLimit) {
+		return x
+	}
+	return sign * x
+}
+
+func xorOperation(n int, start int) int {
+	res := 0
+	var temp int
+	for i := 0; i < n; i++ {
+		temp = start + i * 2
+		res = res ^ temp
+	}
+	return res
+}
+
