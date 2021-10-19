@@ -1,9 +1,11 @@
 package study
 
-
 // study.go
 
-import "github.com/pkg/errors"
+import (
+	"github.com/bigwhite/functrace"
+	"github.com/pkg/errors"
+)
 
 var _ MStudy = (*study)(nil)
 
@@ -19,22 +21,27 @@ type study struct {
 }
 
 func (s *study) Listen(msg string) string {
+	defer functrace.Trace()()
 	return s.Name + " 听 " + msg
 }
 
 func (s *study) Speak(msg string) string {
+	defer functrace.Trace()()
 	return s.Name + " 说 " + msg
 }
 
 func (s *study) Read(msg string) string {
+	defer functrace.Trace()()
 	return s.Name + " 读 " + msg
 }
 
 func (s *study) Write(msg string) string {
+	defer functrace.Trace()()
 	return s.Name + " 写 " + msg
 }
 
 func New(name string) (MStudy, error) {
+	defer functrace.Trace()()
 	if name == "" {
 		return nil, errors.New("name required")
 	}
@@ -43,5 +50,3 @@ func New(name string) (MStudy, error) {
 		Name: name,
 	}, nil
 }
-
-

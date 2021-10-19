@@ -3,20 +3,20 @@ package main
 import (
 	"example.com/greetings"
 	"fmt"
+	"github.com/bigwhite/functrace"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
+	"rsc.io/quote"
 	"time"
 )
 
-import "rsc.io/quote"
-
-
 func main() {
-    fmt.Println(quote.Go())
-    message := greetings.Hello("Gladys")
-    fmt.Println(message)
+	defer functrace.Trace()()
+	fmt.Println(quote.Go())
+	message := greetings.Hello("Gladys")
+	fmt.Println(message)
 
 	server := &http.Server{
 		Addr:         ":4000",
@@ -51,12 +51,14 @@ func main() {
 }
 
 func sayBye(w http.ResponseWriter, r *http.Request) {
+	defer functrace.Trace()()
 	w.Write([]byte("Bye bye this is version 1!"))
 }
 
-type myHandler struct {}
+type myHandler struct{}
 
-func (*myHandler) ServeHTTP(w http.ResponseWriter, r *http.Request)  {
+func (*myHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	defer functrace.Trace()()
 	w.Write([]byte("Hello v2, the request URL is: " + r.URL.String()))
 }
 
@@ -68,6 +70,7 @@ var length int
 var res int = 0
 
 func profitableSchemes(n int, minProfit int, group []int, profit []int) int {
+	defer functrace.Trace()()
 	nC = n
 	groupC = group
 	profitC = profit
@@ -78,11 +81,12 @@ func profitableSchemes(n int, minProfit int, group []int, profit []int) int {
 }
 
 func helper(peopleCount int, curPro int, index int) {
+	defer functrace.Trace()()
 	if curPro >= minProfitC {
 		res += 1
 	}
 	for i := index; i < length; i++ {
-		if groupC[i] + peopleCount > nC {
+		if groupC[i]+peopleCount > nC {
 			continue
 		} else {
 			helper(groupC[i]+peopleCount, curPro+profitC[i], i)
